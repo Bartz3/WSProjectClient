@@ -1,0 +1,20 @@
+﻿@page "/"
+@using ServiceReference1
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+@{
+    var client = new UserServiceClient();
+
+    var result = client.GetUsersAsync().Result.@return;
+
+
+    foreach (var item in result)
+    {
+        <h1>@item.Id @item.Username @item.Email</h1>
+        // Console.WriteLine(item.Id + " " + item.Username + " " + item.Email);
+    }
+
+}
+Welcome to your new app.
