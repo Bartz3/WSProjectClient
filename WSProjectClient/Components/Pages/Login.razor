@@ -1,0 +1,153 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Mvc
+@using ServiceReference1
+@using System.Security.Claims
+@using WSProjectClient.Controllers
+@using Microsoft.AspNetCore.Authentication
+@* @inject HttpContextAccessor HttpContextAccessor *@
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject Blazored.SessionStorage.ISessionStorageService session
+
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using WSProjectClient.Data
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager NavManager
+
+ <PageTitle>Home</PageTitle>
+
+
+
+ @if (showLogin)
+ {
+     <div class="login-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+         <h3>Login</h3>
+         <div class="form-group">
+            <label style="text-align: center;" for="email">Email</label>
+             <input type="text" id="email" @bind="email" placeholder="Enter your email" class="form-control" style="width: 300px; margin: 10px auto; text-align: center;" />
+         </div>
+         <div class="form-group">
+             <label for="password">Password</label>
+             <input type="password" id="password" @bind="password" placeholder="Enter your password" class="form-control" style="width: 300px; margin: 10px auto; text-align: center;" />
+         </div>
+        <button class="btn btn-primary" @onclick="LoginToSite" style="margin: 10px auto; display: block; text-align: center;" type="button">Login</button>
+        <button class="btn btn-secondary" @onclick="() => SwitchPageToRegister()" style="margin: 10px auto; display: block; text-align: center;" type="button">Switch to Register</button>
+     </div>
+ }
+ else
+ {
+     <div class="register-container">
+        <h3 style="text-align: center;">Register</h3>
+        <div class="form-group" style="text-align: center;">
+            <label style="text-align: center;" for="username">Username</label>
+             <input type="text" id="username" class="form-control" @bind="username" style="width: 300px; margin: 10px auto; text-align: center;" />
+         </div>
+        <div class="form-group" style="text-align: center;">
+            <label for="email">Email</label>
+             <input type="email" id="email" class="form-control" @bind="email" style="width: 300px; margin: 10px auto; text-align: center;" />
+         </div>
+        <div class="form-group" style="text-align: center;">
+             <label for="password">Password</label>
+             <input type="password" id="password" class="form-control" @bind="password" style="width: 300px; margin: 10px auto; text-align: center;" />
+         </div>
+        <div class="form-group" style="text-align: center;">
+             <label for="confirmPassword">Confirm Password</label>
+             <input type="password" id="confirmPassword" class="form-control" @bind="confirmPassword" style="width: 300px; margin: 10px auto; text-align: center;" />
+         </div>
+         <button class="btn btn-primary" @onclick="Register" style="margin: 10px auto; display: block; text-align: center;" type="button">Register</button>
+         <button class="btn btn-secondary" @onclick="SwitchPageToLogin" style="margin: 10px auto; display: block; text-align: center;">Switch to Login</button>
+     </div>
+
+ }
+
+@code {
+
+    bool showLogin = true;
+    string username = "";
+    string email = "";
+    string password = "";
+    string confirmPassword = "";
+
+    private void SwitchPageToRegister() => showLogin = false;
+
+    private void SwitchPageToLogin() => showLogin = true;
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
+    private void Register()
+    {
+        UserController userController = new UserController();
+
+        addUserRequest aur = new addUserRequest();
+        aur.email = this.email;
+        aur.username = this.username;
+        aur.password = this.password;
+        aur.passwordConfirm = this.confirmPassword;
+
+        userController.AddUser(aur);
+
+    }
+
+    public async void LoginToSite()
+    {
+        UserController userController = new UserController();
+
+        userCredentialsRequest userCredentialsRequest = new userCredentialsRequest();
+        userCredentialsRequest.email = this.email;
+        userCredentialsRequest.password = this.password;
+
+        var user = await userController.Login(userCredentialsRequest);
+
+        if (user != null)
+        {
+            var userStorage = new UserInfo();
+            userStorage.UserId = user.Id;
+            userStorage.Username = user.Username;
+            userStorage.Email = user.Email;
+
+            session.SetItemAsync("SessionUser", userStorage);
+            // await ProtectedSessionStore.SetAsync("userId", user.Id);
+            // await ProtectedSessionStore.SetAsync("email", user.Email);
+        }
+
+        NavManager.NavigateTo("/");
+    }
+    // public async Task<IActionResult> LoginToSite()
+    // {
+    //     UserController userController = new UserController();
+
+    //     userCredentialsRequest userCredentialsRequest = new userCredentialsRequest();
+    //     userCredentialsRequest.email = this.email;
+    //     userCredentialsRequest.password = this.password;
+    //     IHttpContextAccessor httpContextAccessor = new HttpContextAccessor();
+    //     HttpContext? httpContext = httpContextAccessor.HttpContext;
+
+    //     var user = await userController.Login(userCredentialsRequest);
+
+    //     if (user != null)
+    //     {
+    //         var claims = new List<Claim>
+    //     {
+    //         new Claim(ClaimTypes.Name, user.Username),
+    //         new Claim(ClaimTypes.Email, user.Email)
+    //     };
+
+    //         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+    //         var principial = new ClaimsPrincipal(identity);
+
+    //         if (httpContext != null)
+    //         {
+    //             await httpContext.SignInAsync(principial!);
+    //         }
+    //         else
+    //         {
+    //             throw new Exception("HttpContext not working");
+    //         }
+
+    //     }
+    //     return new RedirectToPageResult("/home");
+    // }
+
+}

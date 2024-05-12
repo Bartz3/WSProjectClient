@@ -1,0 +1,97 @@
+﻿ @page "/airports"
+ @using AirportServiceReference
+ @rendermode InteractiveServer
+ @using WSProjectClient.Controllers
+
+
+ <PageTitle>Airports</PageTitle>
+
+
+ <h1>Airports</h1>
+ @{
+    if (addAirport)
+    {
+        <form>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" @bind="@newAirport.Name" />
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <input type="text" class="form-control" id="city" @bind="@newAirport.City" />
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input type="text" class="form-control" id="country" @bind="@newAirport.Country" />
+            </div>
+            <button type="button" class="btn btn-primary" @onclick="AddAirport" style="margin-top: 15px">Add Airport</button>
+            <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Change view</button>
+        </form>
+    }
+    else
+    {
+        <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-bottom: 10px">Change view</button>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (aiports == null)
+                {
+                    <p>Ładowanie...</p>
+                }
+                else
+                {
+
+                    @foreach (var item in aiports)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>@item.City</td>
+                            <td>@item.Country</td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+        </table>
+
+    }
+
+
+ }
+@code {
+    private airport newAirport = new airport();
+
+    bool addAirport = false;
+    string name = "";
+    string city = "";
+    string country = "";
+
+    AirportController ac = new AirportController();
+    airport[] aiports;
+
+    protected override async Task OnInitializedAsync()
+    {
+        aiports = await ac.GetAiports();
+    }
+
+    public void AddAirport()
+    {
+        ac.AddAirport(newAirport);
+        addAirport = false;
+    }
+    public void ChangeToAdd()=>addAirport = true;
+    public void ChangeToList() => addAirport = false;
+    public void ToggleAddAirport()
+    {
+        addAirport = !addAirport;
+    }
+ }
