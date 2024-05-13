@@ -5,20 +5,29 @@
 @using WSProjectClient.Data
  @inject ProtectedSessionStorage ProtectedSessionStore
  @inject Blazored.SessionStorage.ISessionStorageService session
+ @inject UserInfo userInfo
+ @inject IJSRuntime jsRuntime
 
  <PageTitle>Users</PageTitle>
 
- <h1>Hello, world!</h1>
+ <h1 style="margin-bottom:50px">WSProjectClient Home</h1>
+<button class="btn btn-primary" @onclick="() => TestMethod()" type="button">Test</button>
+
  @{
-     <button class="btn btn-primary" @onclick="GetSessionUser" type="button">GetUser</button>
 
     if (userStorage != null)
     {
         <h1>Zalogowano jako</h1>
-        <p>@userStorage.Username (@userStorage.UserId)</p>
- 
+        <h2>@userStorage.Username (@userStorage.UserId)</h2>
+
     }
-     <table class="table table-striped table-bordered">
+
+    if(userInfo.UserId!=0)
+    {
+        <h1>Zalogowano jako</h1>
+        <p>@userInfo.Username (@userInfo.UserId)</p>
+    }
+    <table class="table table-striped table-bordered">
          <thead class="thead-dark">
              <tr>
                  <th>Id</th>
@@ -53,15 +62,25 @@
     user[] users;
     public UserInfo userStorage;
 
-    public async Task GetSessionUser()
+    public async Task TestMethod()
     {
-        userStorage = await session.GetItemAsync<UserInfo>("SessionUser");
+       
     }
 
     protected override async Task OnInitializedAsync()
     {
         users = await us.GetUsers();
-        // GetSessionData();
+        // await jsRuntime.InvokeVoidAsync("Hello from Blazor");
+      
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Wywołaj kod JavaScriptu po zakończeniu renderowania komponentu
+            await jsRuntime.InvokeVoidAsync("yourJavaScriptFunction");
+        }
     }
 
     // public async Task GetSessionUser()

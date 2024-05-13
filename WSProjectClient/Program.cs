@@ -1,6 +1,7 @@
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WSProjectClient.Components;
+using WSProjectClient.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddBlazoredSessionStorage();
+
+builder.Services.AddSingleton<UserInfo>();
 
 
 builder.Services.AddDistributedMemoryCache();

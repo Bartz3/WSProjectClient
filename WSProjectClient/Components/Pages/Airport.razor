@@ -25,12 +25,12 @@
                 <input type="text" class="form-control" id="country" @bind="@newAirport.Country" />
             </div>
             <button type="button" class="btn btn-primary" @onclick="AddAirport" style="margin-top: 15px">Add Airport</button>
-            <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Change view</button>
+            <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Back to the list</button>
         </form>
     }
     else
     {
-        <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-bottom: 10px">Change view</button>
+        <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-bottom: 10px">Add airport</button>
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>

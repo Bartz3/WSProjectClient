@@ -9,13 +9,14 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
+
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Users
+                <span aria-hidden="true"> <i class="bi bi-house-door-fill" style="font-size: 1.5rem; color: cornflowerblue;"></i></span> Users
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
+ @*        <div class="nav-item px-3">
             <NavLink class="nav-link" href="counter">
                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
             </NavLink>
@@ -25,11 +26,34 @@
             <NavLink class="nav-link" href="weather">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
             </NavLink>
+        </div> *@
+        <div class="nav-item px-3 d-flex align-items-center">
+
+            <NavLink class="nav-link" href="planes">
+                <span aria-hidden="true"> <i class="bi bi-airplane" style="font-size: 1.5rem; color: cornflowerblue;"></i></span>Planes
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="airports">
+                <span aria-hidden="true"><i class="bi bi-airplane-engines-fill" style="font-size: 1.5rem; color: cornflowerblue;"></i></span> Airports
+            </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="airports">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Airports
+            <NavLink class="nav-link" href="flights">
+                <span aria-hidden="true"><i class="bi bi-airplane-engines" style="font-size: 1.5rem; color: cornflowerblue;"></i></span> Flights
+            </NavLink>
+        </div>
+
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="userReservation">
+                <span aria-hidden="true"><i class="bi bi-journals" style="font-size: 1.5rem; color: cornflowerblue;"></i></span> User Reservations
+            </NavLink>
+        </div>  
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="userTicket">
+                <span aria-hidden="true"><i class="bi bi-ticket-perforated" style="font-size: 1.5rem; color: cornflowerblue;"></i></span> User Tickets
             </NavLink>
         </div>
 

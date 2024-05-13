@@ -1,0 +1,101 @@
+﻿ @page "/planes"
+ @using AirportServiceReference
+ @using PlaneServiceReference
+ @using WSProjectClient.Controllers
+
+
+ @rendermode InteractiveServer
+
+
+
+
+ <PageTitle>Planes</PageTitle>
+
+
+ <h1>Planes</h1>
+ @{
+    if (addPlane)
+    {
+        <form>
+            <div class="form-group">
+                <label for="type">Type:</label>
+                <input type="text" class="form-control" id="type" @bind="@newPlane.Type" />
+            </div>
+            <div class="form-group">
+                <label for="seats">Seats:</label>
+                <input type="number" class="form-control" id="seats" @bind="@newPlane.Seats" />
+            </div>
+            <button type="button" class="btn btn-primary" @onclick="AddPlane" style="margin-top: 15px">Add Plane</button>
+            <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Go to the list</button>
+        </form>
+    }
+    else
+    {
+        <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-bottom: 10px">Add Plane</button>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Type</th>
+                    <th>Number of Seats</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (planes == null)
+                {
+                    <p>Ładowanie...</p>
+                }
+                else
+                {
+
+                    @foreach (var item in planes)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Type</td>
+                            <td>@item.Seats</td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+        </table>
+
+    }
+
+
+ }
+@code {
+    private plane newPlane = new plane();
+
+    bool addPlane = false;
+
+    PlaneController pc = new PlaneController();
+    plane[] planes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        planes = await pc.GetPlanes();
+    }
+
+    public async void AddPlane()
+    {
+        pc.AddPlane(newPlane);
+        planes = await pc.GetPlanes();
+
+        addPlane = false;
+
+        // await jsruntime.ToastrSuccess("Plane added successfully");
+ 
+
+    }
+    public void ChangeToAdd() => addPlane = true;
+    public void ChangeToList() => addPlane = false;
+    public void ToggleAddAirport()
+    {
+        addPlane = !addPlane;
+    }
+
+
+}

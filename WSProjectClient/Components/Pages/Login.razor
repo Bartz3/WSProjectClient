@@ -15,7 +15,7 @@
 @using WSProjectClient.Data
 @inject ProtectedSessionStorage ProtectedSessionStore
 @inject NavigationManager NavManager
-
+@inject UserInfo userInfo
  <PageTitle>Home</PageTitle>
 
 
@@ -107,7 +107,11 @@
             userStorage.Username = user.Username;
             userStorage.Email = user.Email;
 
-            session.SetItemAsync("SessionUser", userStorage);
+            userInfo.UserId = user.Id;
+            userInfo.Email= user.Email;
+            userInfo.Username = user.Username;
+
+            // session.SetItemAsync("SessionUser", userStorage);
             // await ProtectedSessionStore.SetAsync("userId", user.Id);
             // await ProtectedSessionStore.SetAsync("email", user.Email);
         }

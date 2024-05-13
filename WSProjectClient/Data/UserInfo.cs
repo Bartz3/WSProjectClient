@@ -1,9 +1,14 @@
-﻿namespace WSProjectClient.Data
+﻿using Microsoft.AspNetCore.Components;
+
+namespace WSProjectClient.Data
 {
     public class UserInfo
     {
-        public int UserId { get; set; }     
-        public string Username { get; set; }
-        public string Email{ get; set; }
+        //[CascadingParameter]
+        public int UserId { get; set; }
+
+        public string? Username { get; set; }
+
+        public string? Email{ get; set; }
     }
 }
