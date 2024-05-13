@@ -13,7 +13,14 @@ namespace WSProjectClient.Controllers
         public UserTicketController()
         {
             _client = new UserTicketServiceClient();
+            
         }
+
+        //public async Task<userTickets> GetTickets()
+        //{
+            //var response = await _client.GetTicketsAsync();
+            //return response.@return;
+        //}
 
 
 

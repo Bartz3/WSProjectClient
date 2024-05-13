@@ -4,6 +4,7 @@
 @using WSProjectClient.Controllers
 @using PlaneServiceReference
 @using AirportServiceReference
+@using UserTicketServiceReference
 
 @rendermode InteractiveServer
 
@@ -101,13 +102,17 @@
     string country = "";
 
     FlightController fc = new FlightController();
-    flight[] flights;
+    FlightServiceReference.flight[] flights;
 
     PlaneController pc = new PlaneController();
     PlaneServiceReference.plane[] planes;
 
     AirportController ac = new AirportController();
     AirportServiceReference.airport[] airports;
+
+
+    UserTicketController uc = new UserTicketController();
+    
 
     protected override async Task OnInitializedAsync()
     {

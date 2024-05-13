@@ -1,9 +1,10 @@
 ﻿ @page "/userReservation"
 @using AirportServiceReference
 @using FlightServiceReference
+@using UserReservationServiceReference
+@using UserTicketServiceReference
 @using WSProjectClient.Controllers
 @using PlaneServiceReference
-@using AirportServiceReference
 
 @rendermode InteractiveServer
 
@@ -14,41 +15,23 @@
 @{
     if (addFlight)
     {
-        <form>
-            <div class="form-group">
-                <label for="plane">Plane:</label>
-                <select class="form-control" id="plane" @bind="@newFlight.planeId">
-                    @foreach (var plane in planes)
-                    {
-                        <option value="@plane.Id">@plane.Type</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="arrival">Arrival:</label>
-                <select class="form-control" id="plane" @bind="@newFlight.arrivalId">
-                    @foreach (var airport in airports)
-                    {
-                        <option value="@airport.Id">@airport.City (@airport.Name)</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="arrival">Destination:</label>
-                <select class="form-control" id="plane" @bind="@newFlight.destinationId">
-                    @foreach (var airport in airports)
-                    {
-                        <option value="@airport.Id">@airport.City (@airport.Name)</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="flightDate">Flight Date:</label>
-                <input type="date" class="form-control" id="flightDate" @bind="@newFlight.date" />
-            </div>
-            <button type="button" class="btn btn-primary" @onclick="AddFlight" style="margin-top: 15px">Add Flight</button>
-            <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Back to the list</button>
-        </form>
+
+            // <form>
+            //     <div class="form-group">
+            //         <label for="ticketName">Name:</label>
+            //         <input type="text" class="form-control" id="ticketName" @bind="@ticket.Name" />
+            //     </div>
+            //     <div class="form-group">
+            //         <label for="ticketCity">City:</label>
+            //         <input type="text" class="form-control" id="ticketCity" @bind="@ticket.City" />
+            //     </div>
+            //     <div class="form-group">
+            //         <label for="ticketCountry">Country:</label>
+            //         <input type="text" class="form-control" id="ticketCountry" @bind="@ticket.Country" />
+            //     </div>
+            //     <button type="button" class="btn btn-primary" @onclick="AddTicket" style="margin-top: 15px">Add Ticket</button>
+            // </form>
+ 
     }
     else
     {
@@ -93,7 +76,7 @@
 }
 @code {
     private addFlightRequest newFlight = new addFlightRequest();
-
+    private  UserReservationServiceReference.userTickets ticket;
 
     bool addFlight = false;
     string name = "";
@@ -101,7 +84,7 @@
     string country = "";
 
     FlightController fc = new FlightController();
-    flight[] flights;
+    FlightServiceReference.flight[] flights;
 
     PlaneController pc = new PlaneController();
     PlaneServiceReference.plane[] planes;
@@ -109,26 +92,34 @@
     AirportController ac = new AirportController();
     AirportServiceReference.airport[] airports;
 
+    UserReservationController urc = new UserReservationController();
+    addUserReservationRequest userReq = new addUserReservationRequest();
+
     protected override async Task OnInitializedAsync()
     {
-        flights = await fc.GetFlights();
-        planes = await pc.GetPlanes();
-        airports = await ac.GetAiports();
+        // flights = await fc.GetFlights();
+        // planes = await pc.GetPlanes();
+        // airports = await ac.GetAiports();
+        // newFlight.date = DateTime.Now;
+        // urc.GetUserReservations();
 
-        newFlight.date = DateTime.Now;
+        UserReservationServiceReference.getUserReservationRequest userReq = new UserReservationServiceReference.getUserReservationRequest();
+        userReq.userId= 5;
+        userReq.flightId = 6;
+        urc.GetUserReservationByUserId(userReq);
     }
 
-    public void AddFlight()
+    public void AddReservation(addUserReservationRequest userReq)
     {
-        newFlight.date = newFlight.date.Date;
-        newFlight.dateSpecified= true;
-        fc.AddFlight(newFlight);
-        addFlight = false;
+        urc.AddReservation(userReq);
     }
+
+    public async void GetReservation()
+    {
+      
+    }
+
     public void ChangeToAdd() => addFlight = true;
     public void ChangeToList() => addFlight = false;
-    public void ToggleAddAirport()
-    {
-        addFlight = !addFlight;
-    }
+
 }
