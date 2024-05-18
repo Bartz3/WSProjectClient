@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Xml.Serialization;
+
 namespace UserReservationServiceReference
 {
     
@@ -16,9 +18,9 @@ namespace UserReservationServiceReference
     public interface UserReservationService
     {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://interfaces/UserReservationService/GetUserReservationsRequest", ReplyAction="http://interfaces/UserReservationService/GetUserReservationsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://interfaces/UserReservationService/GetUserReservationsByFlightIdRequest", ReplyAction="http://interfaces/UserReservationService/GetUserReservationsByFlightIdResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsResponse> GetUserReservationsAsync(UserReservationServiceReference.GetUserReservationsRequest request);
+        System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsByFlightIdResponse> GetUserReservationsByFlightIdAsync(UserReservationServiceReference.GetUserReservationsByFlightIdRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://interfaces/UserReservationService/GetUserReservationsByUserIdRequest", ReplyAction="http://interfaces/UserReservationService/GetUserReservationsByUserIdResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -33,9 +35,227 @@ namespace UserReservationServiceReference
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<UserReservationServiceReference.GetReservationConfirmationResponse> GetReservationConfirmationAsync(UserReservationServiceReference.GetReservationConfirmationRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://interfaces/UserReservationService/GetUserReservationsByFlightIdRequest", ReplyAction="http://interfaces/UserReservationService/GetUserReservationsByFlightIdResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://interfaces/UserReservationService/GetUserReservationsRequest", ReplyAction="http://interfaces/UserReservationService/GetUserReservationsResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsByFlightIdResponse> GetUserReservationsByFlightIdAsync(UserReservationServiceReference.GetUserReservationsByFlightIdRequest request);
+        System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsResponse> GetUserReservationsAsync(UserReservationServiceReference.GetUserReservationsRequest request);
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://interfaces/")]
+    public partial class getUserReservationRequest
+    {
+        
+        private int userIdField;
+        
+        private int flightIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int userId
+        {
+            get
+            {
+                return this.userIdField;
+            }
+            set
+            {
+                this.userIdField = value;
+            }
+    
+        }
+        
+        /// <remarks/>[XmlIgnore]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)][XmlIgnore]
+        public int flightId
+        {
+            get
+            {
+                return this.flightIdField;
+            }
+            set
+            {
+                this.flightIdField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://interfaces/")]
+    public partial class addUserReservationRequest
+    {
+        
+        private int userIdField;
+        
+        private int flightIdField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int userId
+        {
+            get
+            {
+                return this.userIdField;
+            }
+            set
+            {
+                this.userIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int flightId
+        {
+            get
+            {
+                return this.flightIdField;
+            }
+            set
+            {
+                this.flightIdField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://interfaces/")]
+
+    public partial class userTickets
+    {
+        
+        private int idField;
+        
+        private double priceField;
+        
+        private int seatNumberField;
+        
+        private string firstNameField;
+        
+        private string lastNameField;
+        
+        private userReservations userReservationsField;
+        
+        private flight flightField;
+        
+        private airport airportField;
+        
+        /// <remarks/>[XmlIgnore]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)][XmlIgnore]
+        public int Id
+        {
+            get
+            {
+                return this.idField;
+            }
+            set
+            {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public double Price
+        {
+            get
+            {
+                return this.priceField;
+            }
+            set
+            {
+                this.priceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int SeatNumber
+        {
+            get
+            {
+                return this.seatNumberField;
+            }
+            set
+            {
+                this.seatNumberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string FirstName
+        {
+            get
+            {
+                return this.firstNameField;
+            }
+            set
+            {
+                this.firstNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public string LastName
+        {
+            get
+            {
+                return this.lastNameField;
+            }
+            set
+            {
+                this.lastNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public userReservations UserReservations
+        {
+            get
+            {
+                return this.userReservationsField;
+            }
+            set
+            {
+                this.userReservationsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public flight Flight
+        {
+            get
+            {
+                return this.flightField;
+            }
+            set
+            {
+                this.flightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public airport Airport
+        {
+            get
+            {
+                return this.airportField;
+            }
+            set
+            {
+                this.airportField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -162,222 +382,6 @@ namespace UserReservationServiceReference
             set
             {
                 this.emailField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://interfaces/")]
-    public partial class addUserReservationRequest
-    {
-        
-        private int userIdField;
-        
-        private int flightIdField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public int userId
-        {
-            get
-            {
-                return this.userIdField;
-            }
-            set
-            {
-                this.userIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public int flightId
-        {
-            get
-            {
-                return this.flightIdField;
-            }
-            set
-            {
-                this.flightIdField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://interfaces/")]
-    public partial class getUserReservationRequest
-    {
-        
-        private int userIdField;
-        
-        private int flightIdField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public int userId
-        {
-            get
-            {
-                return this.userIdField;
-            }
-            set
-            {
-                this.userIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public int flightId
-        {
-            get
-            {
-                return this.flightIdField;
-            }
-            set
-            {
-                this.flightIdField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://interfaces/")]
-    public partial class userTickets
-    {
-        
-        private int idField;
-        
-        private double priceField;
-        
-        private int seatNumberField;
-        
-        private string firstNameField;
-        
-        private string lastNameField;
-        
-        private userReservations userReservationsField;
-        
-        private flight flightField;
-        
-        private airport airportField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public int Id
-        {
-            get
-            {
-                return this.idField;
-            }
-            set
-            {
-                this.idField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public double Price
-        {
-            get
-            {
-                return this.priceField;
-            }
-            set
-            {
-                this.priceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public int SeatNumber
-        {
-            get
-            {
-                return this.seatNumberField;
-            }
-            set
-            {
-                this.seatNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string FirstName
-        {
-            get
-            {
-                return this.firstNameField;
-            }
-            set
-            {
-                this.firstNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
-        public string LastName
-        {
-            get
-            {
-                return this.lastNameField;
-            }
-            set
-            {
-                this.lastNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
-        public userReservations UserReservations
-        {
-            get
-            {
-                return this.userReservationsField;
-            }
-            set
-            {
-                this.userReservationsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public flight Flight
-        {
-            get
-            {
-                return this.flightField;
-            }
-            set
-            {
-                this.flightField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public airport Airport
-        {
-            get
-            {
-                return this.airportField;
-            }
-            set
-            {
-                this.airportField = value;
             }
         }
     }
@@ -617,20 +621,30 @@ namespace UserReservationServiceReference
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetUserReservations", WrapperNamespace="http://interfaces/", IsWrapped=true)]
-    public partial class GetUserReservationsRequest
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetUserReservationsByFlightId", WrapperNamespace="http://interfaces/", IsWrapped=true)]
+    public partial class GetUserReservationsByFlightIdRequest
     {
         
-        public GetUserReservationsRequest()
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
+        [XmlIgnore]
+
+        public UserReservationServiceReference.getUserReservationRequest arg0;
+        
+        public GetUserReservationsByFlightIdRequest()
         {
+        }
+        
+        public GetUserReservationsByFlightIdRequest(UserReservationServiceReference.getUserReservationRequest arg0)
+        {
+            this.arg0 = arg0;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetUserReservationsResponse", WrapperNamespace="http://interfaces/", IsWrapped=true)]
-    public partial class GetUserReservationsResponse
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetUserReservationsByFlightIdResponse", WrapperNamespace="http://interfaces/", IsWrapped=true)]
+    public partial class GetUserReservationsByFlightIdResponse
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
@@ -638,11 +652,11 @@ namespace UserReservationServiceReference
         [System.Xml.Serialization.XmlArrayItemAttribute("reservations", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
         public UserReservationServiceReference.userReservations[] @return;
         
-        public GetUserReservationsResponse()
+        public GetUserReservationsByFlightIdResponse()
         {
         }
         
-        public GetUserReservationsResponse(UserReservationServiceReference.userReservations[] @return)
+        public GetUserReservationsByFlightIdResponse(UserReservationServiceReference.userReservations[] @return)
         {
             this.@return = @return;
         }
@@ -734,28 +748,20 @@ namespace UserReservationServiceReference
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetUserReservationsByFlightId", WrapperNamespace="http://interfaces/", IsWrapped=true)]
-    public partial class GetUserReservationsByFlightIdRequest
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetUserReservations", WrapperNamespace="http://interfaces/", IsWrapped=true)]
+    public partial class GetUserReservationsRequest
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public UserReservationServiceReference.getUserReservationRequest arg0;
-        
-        public GetUserReservationsByFlightIdRequest()
+        public GetUserReservationsRequest()
         {
-        }
-        
-        public GetUserReservationsByFlightIdRequest(UserReservationServiceReference.getUserReservationRequest arg0)
-        {
-            this.arg0 = arg0;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetUserReservationsByFlightIdResponse", WrapperNamespace="http://interfaces/", IsWrapped=true)]
-    public partial class GetUserReservationsByFlightIdResponse
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetUserReservationsResponse", WrapperNamespace="http://interfaces/", IsWrapped=true)]
+    public partial class GetUserReservationsResponse
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
@@ -763,11 +769,11 @@ namespace UserReservationServiceReference
         [System.Xml.Serialization.XmlArrayItemAttribute("reservations", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
         public UserReservationServiceReference.userReservations[] @return;
         
-        public GetUserReservationsByFlightIdResponse()
+        public GetUserReservationsResponse()
         {
         }
         
-        public GetUserReservationsByFlightIdResponse(UserReservationServiceReference.userReservations[] @return)
+        public GetUserReservationsResponse(UserReservationServiceReference.userReservations[] @return)
         {
             this.@return = @return;
         }
@@ -824,15 +830,16 @@ namespace UserReservationServiceReference
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsResponse> UserReservationServiceReference.UserReservationService.GetUserReservationsAsync(UserReservationServiceReference.GetUserReservationsRequest request)
+        System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsByFlightIdResponse> UserReservationServiceReference.UserReservationService.GetUserReservationsByFlightIdAsync(UserReservationServiceReference.GetUserReservationsByFlightIdRequest request)
         {
-            return base.Channel.GetUserReservationsAsync(request);
+            return base.Channel.GetUserReservationsByFlightIdAsync(request);
         }
         
-        public System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsResponse> GetUserReservationsAsync()
+        public System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsByFlightIdResponse> GetUserReservationsByFlightIdAsync(UserReservationServiceReference.getUserReservationRequest arg0)
         {
-            UserReservationServiceReference.GetUserReservationsRequest inValue = new UserReservationServiceReference.GetUserReservationsRequest();
-            return ((UserReservationServiceReference.UserReservationService)(this)).GetUserReservationsAsync(inValue);
+            UserReservationServiceReference.GetUserReservationsByFlightIdRequest inValue = new UserReservationServiceReference.GetUserReservationsByFlightIdRequest();
+            inValue.arg0 = arg0;
+            return ((UserReservationServiceReference.UserReservationService)(this)).GetUserReservationsByFlightIdAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -867,16 +874,15 @@ namespace UserReservationServiceReference
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsByFlightIdResponse> UserReservationServiceReference.UserReservationService.GetUserReservationsByFlightIdAsync(UserReservationServiceReference.GetUserReservationsByFlightIdRequest request)
+        System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsResponse> UserReservationServiceReference.UserReservationService.GetUserReservationsAsync(UserReservationServiceReference.GetUserReservationsRequest request)
         {
-            return base.Channel.GetUserReservationsByFlightIdAsync(request);
+            return base.Channel.GetUserReservationsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsByFlightIdResponse> GetUserReservationsByFlightIdAsync(UserReservationServiceReference.getUserReservationRequest arg0)
+        public System.Threading.Tasks.Task<UserReservationServiceReference.GetUserReservationsResponse> GetUserReservationsAsync()
         {
-            UserReservationServiceReference.GetUserReservationsByFlightIdRequest inValue = new UserReservationServiceReference.GetUserReservationsByFlightIdRequest();
-            inValue.arg0 = arg0;
-            return ((UserReservationServiceReference.UserReservationService)(this)).GetUserReservationsByFlightIdAsync(inValue);
+            UserReservationServiceReference.GetUserReservationsRequest inValue = new UserReservationServiceReference.GetUserReservationsRequest();
+            return ((UserReservationServiceReference.UserReservationService)(this)).GetUserReservationsAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

@@ -1,6 +1,5 @@
 using System.ServiceModel;
 using System.Threading.Tasks;
-using AirportServiceReference;
 using UserReservationServiceReference;
 
 namespace WSProjectClient.Controllers
@@ -10,22 +9,12 @@ namespace WSProjectClient.Controllers
         private  UserReservationServiceClient _client;
         private readonly userTickets ticket;
 
-
-
-
-
         public UserReservationController()
         {
             _client = new UserReservationServiceClient();
 
         }
 
-
-        //public async Task<airport[]> GetAiports()
-        //{
-        //var response = await _client.GetAirportsAsync();
-        //return response.@return;
-        //}
 
         public async void AddReservation(addUserReservationRequest _userReq)
         {
@@ -35,11 +24,12 @@ namespace WSProjectClient.Controllers
 
         public async void GetUserReservations()
         {
-            if (_client.State == CommunicationState.Faulted)
-            {
-                _client.Abort();
-                _client = new UserReservationServiceClient();
-            }
+            //if (_client.State == CommunicationState.Faulted)
+            //{
+            //    _client.Abort();
+            //    _client = new UserReservationServiceClient();
+            //}
+            //    _client.Open(); // Open the new channel
             await _client.GetUserReservationsAsync();
 
 
@@ -52,6 +42,8 @@ namespace WSProjectClient.Controllers
 
         public async void GetUserReservationByUserId(getUserReservationRequest userResReq)
         {
+            userResReq.userId = 5;
+            userResReq.flightId = 6;
             await _client.GetUserReservationsByUserIdAsync(userResReq);
         }
 

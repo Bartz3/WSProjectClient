@@ -116,11 +116,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        flights = await fc.GetFlights();
-        planes = await pc.GetPlanes();
-        airports = await ac.GetAiports();
+        UserTicketController utc = new UserTicketController();
 
-        newFlight.date = DateTime.Now;
+        utc.GetTickets();
     }
 
     public void AddFlight()
