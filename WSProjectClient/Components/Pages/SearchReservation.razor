@@ -50,25 +50,23 @@
                 </tr>
             </thead>
             <tbody>
-            @if (filteredReservations == null || userInfo.UserId == 0 || userInfo == null || filteredReservations.getUserReservationResponse == null || reservationId==0)
+            @if (filteredReservations == null || userInfo.UserId == 0 || userInfo == null || userReservation.Id ==0)
                 {
                     <p>No reservations.</p>
                 }
                 else
                 {
+                <tr>
+                    <td>@userReservation.Id</td>
+                    <td>@userReservation.User.Username</td>
+                    <td>@userReservation.Flight.Arrival.City -> @userReservation.Flight.Destination.City (@userReservation.Flight.FlightDate.Date) </td>
+                    <td>@userReservation.Tickets.FirstOrDefault().FirstName</td>
+                    <td>@userReservation.Tickets.FirstOrDefault().LastName</td>
+                    <td>@userReservation.Tickets.FirstOrDefault().Price</td>
+                    <td>@userReservation.Tickets.FirstOrDefault().SeatNumber</td>
 
-                @foreach (var item in reservations.getUserReservationResponse)
-                    {
-                        <tr>
-                            <td>@item.Id</td>
-                            <td>@item.User.Username</td>
-                            <td>@item.Flight.Arrival.City -> @item.Flight.Destination.City (@item.Flight.FlightDate.Date) </td>
-                            <td>@item.Tickets.FirstOrDefault().FirstName</td>
-                            <td>@item.Tickets.FirstOrDefault().LastName</td>
-                            <td>@item.Tickets.FirstOrDefault().Price</td>
+                </tr>
 
-                        </tr>
-                    }
 
                     <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin: 10px">Add resrvation</button>
                 }
