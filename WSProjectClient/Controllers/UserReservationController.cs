@@ -7,7 +7,7 @@ namespace WSProjectClient.Controllers
     public class UserReservationController
     {
         private  UserReservationServiceClient _client;
-        private readonly userTickets ticket;
+        private userTickets ticket;
 
         public UserReservationController()
         {
@@ -18,6 +18,8 @@ namespace WSProjectClient.Controllers
 
         public async void AddReservation(addUserReservationRequest _userReq)
         {
+        
+
             await _client.AddUserReservationAsync(_userReq);
 
         }
@@ -40,11 +42,15 @@ namespace WSProjectClient.Controllers
             await _client.GetReservationConfirmationAsync(confId);
         }
 
-        public async void GetUserReservationByUserId(getUserReservationRequest userResReq)
+        public async Task<GetUserReservationsByUserIdResponse> GetUserReservationByUserId(GetUserReservationsByUserIdRequest userResReq)
         {
-            userResReq.userId = 5;
-            userResReq.flightId = 6;
-            await _client.GetUserReservationsByUserIdAsync(userResReq);
+            //userResReq.userId = 5;
+            //userResReq.flightId = 
+            var getUserResreq = new getUserReservationRequest();
+            getUserResreq=userResReq.getUserReservationRequest;
+            var output =await _client.GetUserReservationsByUserIdAsync(getUserResreq);
+
+            return output;
         }
 
         public async void GetUserReservationByFlightId(getUserReservationRequest userResReq)

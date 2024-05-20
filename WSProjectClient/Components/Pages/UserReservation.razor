@@ -4,125 +4,190 @@
 @using UserTicketServiceReference
 @using WSProjectClient.Controllers
 @using PlaneServiceReference
+@using WSProjectClient.Data
+@using FlightServiceReference
+@using WSProjectClient.Models
 
+@inject UserInfo userInfo
+ 
 @rendermode InteractiveServer
+
 
 <PageTitle>UserReservation</PageTitle>
 
 
 <h1>Flight</h1>
-@{
-    if (addFlight)
+
+   @if(userInfo.UserId!=0)
     {
-        <h1>Add a flight</h1>
-            // <form>
-            //     <div class="form-group">
-            //         <label for="ticketName">Name:</label>
-            //         <input type="text" class="form-control" id="ticketName" @bind="@ticket.Name" />
-            //     </div>
-            //     <div class="form-group">
-            //         <label for="ticketCity">City:</label>
-            //         <input type="text" class="form-control" id="ticketCity" @bind="@ticket.City" />
-            //     </div>
-            //     <div class="form-group">
-            //         <label for="ticketCountry">Country:</label>
-            //         <input type="text" class="form-control" id="ticketCountry" @bind="@ticket.Country" />
-            //     </div>
-            //     <button type="button" class="btn btn-primary" @onclick="AddTicket" style="margin-top: 15px">Add Ticket</button>
-            // </form>
- 
+    <h1>Zalogowano jako @userInfo.Username ID: (@userInfo.UserId)</h1>
+    }
+@* <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-top: 15px">Add Reservation</button>
+
+
+*@
+@{
+    if (addReservation)
+    {
+        <h1>Add a reservation</h1>
+        <h2>aaa</h2>
+
+        <form>
+
+
+            <div class="form-group">
+                <label for="Flight">Flight</label>
+                <select class="form-control" @bind="@flightId">
+                    @foreach (var flight in flights)
+                    {
+                        // <option value="@flight.Id"> @flight.Arrival.City </option>
+                        <option value="@flight.Id"> @flight.Arrival.City -> @flight.Destination.City (@flight.FlightDate.Date)</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ticketId">Ticket ID:</label>
+                <input type="text" class="form-control" id="ticketId" @bind="@ticket.Id" />
+            </div>
+            <div class="form-group">
+                <label for="ticketPrice">Ticket Price:</label>
+                <input type="number" class="form-control" id="ticketPrice" @bind="@ticket.Price" />
+            </div>
+            <div class="form-group">
+                <label for="seatNumber">Seat Number:</label>
+                <input type="number" class="form-control" id="seatNumber" @bind="@ticket.SeatNumber" />
+            </div>
+
+
+
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" @bind="@ticket.FirstName" />
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" @bind="@ticket.LastName" />
+            </div>
+
+
+             @*<div class="form-group">
+                <label for="flightTicket">Flight (Ticket):</label>
+                <select class="form-control" id="flightTicket" @bind="@ticket.Flight">
+                    @foreach (var flight in flights)
+                    {
+                        <option value="@flight.Id">@flight.Arrival.City -> @flight.Destination.City (@flight.FlightDate.Date)</option>
+                    }
+                </select>
+            </div>*@
+
+            <button type="button" class="btn btn-primary" @onclick="AddReservation" style="margin-top: 15px">Add Reservation</button>
+            <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Back to the list</button>
+        </form>
     }
     else
     {
         <h1>Not flight</h1>
-    //     <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-bottom: 10px">Add a flight</button>
-    //     <table class="table table-striped table-bordered">
-    //         <thead class="thead-dark">
-    //             <tr>
-    //                 <th>Id</th>
-    //                 <th>Plane</th>
-    //                 <th>Arrival</th>
-    //                 <th>Destination</th>
-    //                 <th>FlightDate</th>
-    //             </tr>
-    //         </thead>
-    //         <tbody>
-    //             @if (flights == null)
-    //             {
-    //                 <p>Ładowanie...</p>
-    //             }
-    //             else
-    //             {
+  
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>User</th>
+                    <th>Reservation</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (reservations == null || userInfo.UserId==0 || userInfo ==null || reservations.getUserReservationResponse==null)
+                {
+                    <p>No reservations.</p>
+                }
+                else
+                {
 
-    //                 @foreach (var item in flights)
-    //                 {
-    //                     <tr>
-    //                         <td>@item.Id</td>
-    //                         <td>@item.Plane.Type</td>
-    //                         <td>@item.Arrival.City</td>
-    //                         <td>@item.Destination.City</td>
-    //                         <td>@item.FlightDate.Date</td>  
-    //                     </tr>
-    //                 }
+                    @foreach (var item in reservations.getUserReservationResponse)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.User.Username</td>
+                            <td>@item.Flight.Arrival.City -> @item.Flight.Destination.City (@item.Flight.FlightDate.Date)</td>
+                        </tr>
+                    }
 
-    //             }
+                    <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-bottom: 10px">Add a resrvations</button>
+                }
 
-    //         </tbody>
-    //     </table>
+            </tbody>
+        </table>
 
-    // 
+    
     }
 
 
 }
 @code {
+    private UserReservationServiceReference.userTickets ticket;
+    private UserTicket userTicket = new UserTicket();
 
-    private  UserReservationServiceReference.userTickets ticket;
 
-    bool addFlight = false;
-    string name = "";
-    string city = "";
-    string country = "";
+    private addUserReservationModel addVM = new addUserReservationModel();
+    
 
-    // FlightController fc = new FlightController();
-    // FlightServiceReference.flight[] flights;
+    private UserReservationServiceReference.addUserReservationRequest userReservationReq;
 
-    // PlaneController pc = new PlaneController();
-    // PlaneServiceReference.plane[] planes;
+    private bool addReservation = false;
+    private int flightId;
 
-    // AirportController ac = new AirportController();
-    // AirportServiceReference.airport[] airports;
+    FlightController fc = new FlightController();
+    FlightServiceReference.flight[] flights;
+
+    GetUserReservationsByUserIdResponse reservations = new GetUserReservationsByUserIdResponse();
+    AirportController ac = new AirportController();
+    AirportServiceReference.airport[] airports;
 
     UserReservationController urc = new UserReservationController();
+
     // addUserReservationRequest userReq = new addUserReservationRequest();
+
+    GetUserReservationsByUserIdRequest userReq = new GetUserReservationsByUserIdRequest();
+
+
 
     protected override async Task OnInitializedAsync()
     {
-        // flights = await fc.GetFlights();
-        // planes = await pc.GetPlanes();
-        // airports = await ac.GetAiports();
-        // newFlight.date = DateTime.Now;
-        urc.GetUserReservations();
 
-        // UserReservationServiceReference.getUserReservationRequest userReq = new UserReservationServiceReference.getUserReservationRequest();
-        // userReq.userId= 5;
-        // // userReq.flightId = 6;
-        // urc.GetUserReservationByUserId(userReq);
+        flights =  await fc.GetFlights();
 
+        airports = await ac.GetAiports();
 
-        // UserReservationServiceReference.getUserReservationRequest userReq2 = new UserReservationServiceReference.getUserReservationRequest();
+        ticket = new UserReservationServiceReference.userTickets();
 
-        // userReq2.flightId = 6;
-        // urc.GetUserReservationByFlightId(userReq2);
-        // addUserReservationRequest userResReq = new addUserReservationRequest();
-        // userResReq.flightId = 27;
-        // userResReq.userId = 25;
-        // urc.AddReservation(userResReq);
+        userReq.getUserReservationRequest = new UserReservationServiceReference.getUserReservationRequest();
+        var test = userReq.getUserReservationRequest;
+
+        if (userReq.getUserReservationRequest != null && userInfo.UserId != 0)
+        {
+            userReservationReq = new addUserReservationRequest();
+            userReq.getUserReservationRequest.userId = userInfo.UserId;
+            userReq.getUserReservationRequest.flightId = flightId;
+            reservations = await urc.GetUserReservationByUserId(userReq);
+            StateHasChanged();
+
+        }
+        else
+        {
+            reservations = null;
+            StateHasChanged();
+        }
+         
+
     }
 
-    public void AddReservation(addUserReservationRequest userReq)
+    public void AddReservation()
     {
-        urc.AddReservation(userReq);
+        userReservationReq.userId = userInfo.UserId;
+        userReservationReq.tickets.SetValue(ticket,userReservationReq.tickets.Length+1);
+
+        urc.AddReservation(userReservationReq);
     }
 
     public async void GetReservation()
@@ -130,7 +195,7 @@
       
     }
 
-    public void ChangeToAdd() => addFlight = true;
-    public void ChangeToList() => addFlight = false;
+    public void ChangeToAdd() => addReservation = true;
+    public void ChangeToList() => addReservation = false;
 
 }

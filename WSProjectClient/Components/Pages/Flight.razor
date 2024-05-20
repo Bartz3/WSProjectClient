@@ -42,10 +42,6 @@
                     }
                 </select>
             </div>
-            <div class="form-group">
-                <label for="flightDate">Flight Date:</label>
-                <input type="date" class="form-control" id="flightDate" @bind="@newFlight.date" />
-            </div>
             <button type="button" class="btn btn-primary" @onclick="AddFlight" style="margin-top: 15px">Add Flight</button>
             <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Back to the list</button>
         </form>
@@ -93,7 +89,7 @@
 }
 @code {
     private addFlightRequest newFlight = new addFlightRequest();
-
+    
 
     bool addFlight = false;
     string name = "";
@@ -121,12 +117,14 @@
     public void AddFlight()
     {
         newFlight.date = newFlight.date.Date;
-        newFlight.dateSpecified= true;
+        newFlight.dateSpecified = true;
         fc.AddFlight(newFlight);
         addFlight = false;
     }
+
     public void ChangeToAdd() => addFlight = true;
     public void ChangeToList() => addFlight = false;
+
     public void ToggleAddAirport()
     {
         addFlight = !addFlight;

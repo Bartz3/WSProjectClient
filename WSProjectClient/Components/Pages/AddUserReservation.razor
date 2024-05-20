@@ -1,0 +1,160 @@
+﻿ @page "/addUserReservation"
+@using ServiceReference1
+@using UserReservationServiceReference
+@using UserTicketServiceReference
+@using WSProjectClient.Controllers
+@using PlaneServiceReference
+@using WSProjectClient.Data
+@using FlightServiceReference
+@using WSProjectClient.Models
+
+@inject UserInfo userInfo
+@rendermode InteractiveServer
+
+<PageTitle>AddUserReservation</PageTitle>
+
+
+<h1>Add Flight</h1>
+
+   @if(userInfo.UserId!=0)
+    {
+    <h1>Zalogowano jako @userInfo.Username ID: (@userInfo.UserId)</h1>
+    }
+@{
+    
+        <h1>Add a reservation</h1>
+        <form>
+
+               <div class="form-group">
+                <label for="Flight">Flight</label>
+                <select class="form-control" @bind="@addVM.flightId">
+                    @foreach (var flight in flights)
+                    {
+                        <option value="@flight.Id"> @flight.Arrival.City </option>
+                        // <option value="@flight.Id"> @flight.Arrival.City -> @flight.Destination.City (@flight.FlightDate.Date)</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ticketId">Ticket ID:</label>
+                <input type="text" class="form-control" id="ticketId" @bind="@addVM.ticket.Id" />
+            </div>
+            <div class="form-group">
+                <label for="ticketPrice">Ticket Price:</label>
+                <input type="number" class="form-control" id="ticketPrice" @bind="@addVM.ticket.Price" />
+            </div>
+            <div class="form-group">
+                <label for="seatNumber">Seat Number:</label>
+                <input type="number" class="form-control" id="seatNumber" @bind="@addVM.ticket.SeatNumber" />
+            </div>
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" @bind="@addVM.ticket.FirstName" />
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" @bind="@addVM.ticket.LastName" />
+            </div>
+            <div class="form-group">
+                <label for="flightTicket">Flight (Ticket):</label>
+                <select class="form-control" id="flightTicket" @bind="@addVM.ticket.Flight">
+                    @foreach (var flight in flights)
+                    {
+                        <option value="@flight.Id">@flight.Arrival.City -> @flight.Destination.City (@flight.FlightDate.Date)</option>
+                    }
+                </select>
+            </div>
+            
+            <button type="button" class="btn btn-primary" @onclick="AddReservation" style="margin-top: 15px">Add Reservation</button>
+            <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Back to the list</button>
+        </form>
+
+
+
+}
+@code {
+    private UserReservationServiceReference.userTickets ticket;
+    private UserTicket userTicket = new UserTicket();
+
+    private addUserReservationModel addVM = new addUserReservationModel();
+
+
+    private UserReservationServiceReference.addUserReservationRequest userReservationReq;
+
+    bool addReservation = false;
+    int flightId;
+
+    FlightController fc = new FlightController();
+    FlightServiceReference.flight[] flights;
+
+    GetUserReservationsByUserIdResponse reservations = new GetUserReservationsByUserIdResponse();
+
+    UserReservationController urc = new UserReservationController();
+
+    // addUserReservationRequest userReq = new addUserReservationRequest();
+
+    GetUserReservationsByUserIdRequest userReq = new GetUserReservationsByUserIdRequest();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            flights =  await fc.GetFlights();
+            
+        }catch(Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
+        ticket = new UserReservationServiceReference.userTickets();
+
+        userReq.getUserReservationRequest = new UserReservationServiceReference.getUserReservationRequest();
+        var test = userReq.getUserReservationRequest;
+
+       
+    }
+
+    public void AddReservation()
+    {
+        userReservationReq.userId = userInfo.UserId;
+        userReservationReq.tickets.SetValue(ticket,userReservationReq.tickets.Length+1);
+
+        urc.AddReservation(userReservationReq);
+    }
+
+
+    public void ChangeToAdd() => addReservation = true;
+    public void ChangeToList() => addReservation = false;
+
+}
+
+@code{
+    // UserReservationServiceReference.getUserReservationRequest userReq = new UserReservationServiceReference.getUserReservationRequest();
+    // // userReq.userId= 5;
+    // // userReq.flightId = 6;
+    // var request = new GetUserReservationsByUserIdRequest();
+    // var reservationRequest = new UserReservationServiceReference.getUserReservationRequest()
+    //     {
+    //         userId = 4
+    //  };
+
+    // request.getUserReservationRequest = reservationRequest;
+
+    // var response = await urc.GetUserReservationByUserId(request);
+
+    // urc.GetUserReservationByUserId(userReq);
+
+    // urc.GetUserReservations();
+
+    // UserReservationServiceReference.getUserReservationRequest userReq2 = new UserReservationServiceReference.getUserReservationRequest();
+
+    // userReq2.flightId = 6;
+    // urc.GetUserReservationByFlightId(userReq2);
+    // addUserReservationRequest userResReq = new addUserReservationRequest();
+    // userResReq.flightId = 27;
+    // userResReq.userId = 25;
+    // urc.AddReservation(userResReq);
+}
