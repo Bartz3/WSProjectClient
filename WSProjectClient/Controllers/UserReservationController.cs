@@ -41,7 +41,7 @@ namespace WSProjectClient.Controllers
 
         public async Task<byte[]> GetReservationConfirmation(GetReservationConfirmationRequest request)
         {
-          
+            //urs = new UserReservationService();
             var result = await urs.GetReservationConfirmationAsync(request);
 
             return result.confirmationResponse;

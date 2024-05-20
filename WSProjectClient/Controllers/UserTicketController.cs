@@ -25,16 +25,7 @@ namespace WSProjectClient.Controllers
 
 
 
-        //public async Task<airport[]> GetAiports()
-        //{
-        //    var response = await _client.GetAirportsAsync();
-        //    return response.@return;
-        //}
-
-        //public async void AddAirport(airport airport)
-        //{
-        //    await _client.AddAirportAsync(airport);
-        //}
+  
 
 
 

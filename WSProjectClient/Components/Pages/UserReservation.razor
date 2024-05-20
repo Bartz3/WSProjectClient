@@ -91,6 +91,10 @@
                     <th>Id</th>
                     <th>User</th>
                     <th>Reservation</th>
+                    <th>Last Name(Ticket)</th>
+                    <th>First Name(Ticket)</th>
+                    <th>Price (Ticket)</th>
+                    <th>Seat Number(Ticket)</th>
                     <th>Download Confirmation</th>
                   
                 </tr>
@@ -108,14 +112,18 @@
                         <tr>
                             <td>@item.Id</td>
                             <td>@item.User.Username</td>
-                            <td>@item.Flight.Arrival.City -> @item.Flight.Destination.City (@item.Flight.FlightDate.Date)</td>
+                            <td>@item.Flight.Arrival.City -> @item.Flight.Destination.City (@item.Flight.FlightDate.Date) </td>
+                            <td>@item.Tickets.FirstOrDefault().FirstName</td>
+                            <td>@item.Tickets.FirstOrDefault().LastName</td>
+                            <td>@item.Tickets.FirstOrDefault().Price</td>
+                            <td>@item.Tickets.FirstOrDefault().SeatNumber</td>
                             <td>
                                  <button type="button" class="btn btn-secondary" @onclick="() => DownloadConfirmation(item.Id)">Download Confirmation</button>
                             </td>
                         </tr>
                     }
 
-                    <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin: 10px">Add a resrvations</button>
+                    <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin: 10px">Add resrvation</button>
                 }
 
             </tbody>

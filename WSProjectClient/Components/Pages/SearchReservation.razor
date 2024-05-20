@@ -1,0 +1,157 @@
+﻿ @page "/searchReservation"
+@using ServiceReference1
+@using UserReservationServiceReference
+@using UserTicketServiceReference
+@using WSProjectClient.Controllers
+@using PlaneServiceReference
+@using WSProjectClient.Data
+@using FlightServiceReference
+@using WSProjectClient.Models
+
+@inject UserInfo userInfo
+ 
+@rendermode InteractiveServer
+
+
+<PageTitle>UserReservation</PageTitle>
+
+
+<h1>Search reservations</h1>
+
+   @if(userInfo.UserId!=0)
+    {
+    <h1>User: @userInfo.Username ID: (@userInfo.UserId)</h1>
+    }
+
+@{
+
+    <div>
+        <div class="form-group">
+            <label for="number">Reservation Id:</label>
+            <input type="number" class="form-control" id="date" @bind="reservationId" />
+        </div>
+        <button type="button" class="btn btn-primary" @onclick="SearchReservationFunc" style="margin-bottom: 10px">Search</button>
+    </div>
+
+
+
+    
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>User</th>
+                    <th>Reservation</th>
+                    <th>Last Name(Ticket)</th>
+                    <th>First Name(Ticket)</th>
+                    <th>Price (Ticket)</th>
+                    <th>Seat Number(Ticket)</th>
+                  
+                </tr>
+            </thead>
+            <tbody>
+            @if (filteredReservations == null || userInfo.UserId == 0 || userInfo == null || filteredReservations.getUserReservationResponse == null || reservationId==0)
+                {
+                    <p>No reservations.</p>
+                }
+                else
+                {
+
+                @foreach (var item in reservations.getUserReservationResponse)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.User.Username</td>
+                            <td>@item.Flight.Arrival.City -> @item.Flight.Destination.City (@item.Flight.FlightDate.Date) </td>
+                            <td>@item.Tickets.FirstOrDefault().FirstName</td>
+                            <td>@item.Tickets.FirstOrDefault().LastName</td>
+                            <td>@item.Tickets.FirstOrDefault().Price</td>
+
+                        </tr>
+                    }
+
+                    <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin: 10px">Add resrvation</button>
+                }
+
+            </tbody>
+        </table>
+
+    
+    
+
+
+}
+@code {
+    private UserReservationServiceReference.userTickets ticket;
+    private UserTicket userTicket = new UserTicket();
+
+
+    private addUserReservationModel addVM = new addUserReservationModel();
+
+
+    private UserReservationServiceReference.addUserReservationRequest userReservationReq;
+
+    private bool addReservation = false;
+    private int reservationId =0;
+
+
+    FlightController fc = new FlightController();
+    FlightServiceReference.flight[] flights =Array.Empty<FlightServiceReference.flight>();
+
+    UserReservationServiceReference.flight flights2;
+    UserReservationServiceReference.userReservations userReservation = new UserReservationServiceReference.userReservations();
+    GetUserReservationsByUserIdResponse reservations = new GetUserReservationsByUserIdResponse();
+    GetUserReservationsByUserIdResponse filteredReservations = new GetUserReservationsByUserIdResponse();
+
+
+
+    AirportController ac = new AirportController();
+    AirportServiceReference.airport[] airports =  Array.Empty<AirportServiceReference.airport>();
+
+    UserReservationController urc = new UserReservationController();
+
+    // addUserReservationRequest userReq = new addUserReservationRequest();
+
+    GetUserReservationsByUserIdRequest userReq = new GetUserReservationsByUserIdRequest();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        flights =  await fc.GetFlights();
+
+        airports = await ac.GetAiports();
+
+        ticket = new UserReservationServiceReference.userTickets();
+
+        userReq.getUserReservationRequest = new UserReservationServiceReference.getUserReservationRequest();
+        var test = userReq.getUserReservationRequest;
+
+        if (userReq.getUserReservationRequest != null && userInfo.UserId != 0)
+        {
+            userReservationReq = new addUserReservationRequest();
+            userReq.getUserReservationRequest.userId = userInfo.UserId;
+            reservations = await urc.GetUserReservationByUserId(userReq);
+            StateHasChanged();
+
+        }
+        else
+        {
+            reservations = null;
+            StateHasChanged();
+        }
+
+
+    }
+
+    public void SearchReservationFunc()
+    {
+        userReservation = reservations.getUserReservationResponse.First(x=>x.Id==reservationId);
+        // reservations.getUserReservationResponse.Select(x=>x.Id==reservationId).FirstOrDefault();
+    }
+
+    public void ChangeToAdd() => addReservation = true;
+    public void ChangeToList() => addReservation = false;
+
+}
