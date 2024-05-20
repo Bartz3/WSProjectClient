@@ -27,8 +27,15 @@ namespace WSProjectClient.Controllers
         public async void AddFlight(FlightServiceReference.addFlightRequest flight)
         {
             await _client.AddFlightAsync(flight);
+            var test = new FlightServiceReference.flightSearchRequest();
 
           
+        }
+
+        public async Task<FlightServiceReference.flight[]> SearchFlight(FlightServiceReference.flightSearchRequest flight)
+        {
+            var response = await _client.FlightSearchAsync(flight);
+            return response.@return;
         }
 
 

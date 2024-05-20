@@ -1,0 +1,125 @@
+﻿@page "/searchFlights"
+@using AirportServiceReference
+@using FlightServiceReference
+@using WSProjectClient.Controllers
+@using PlaneServiceReference
+@using AirportServiceReference
+
+@rendermode InteractiveServer
+
+<PageTitle>Search Flight</PageTitle>
+
+<h1>Search flight</h1>
+<div>
+    <div class="form-group">
+        <label for="date">Date:</label>
+        <input type="date" class="form-control" id="date" @bind="flightSearchRequest.date" />
+    </div>
+    <div class="form-group">
+        <label for="destination">Destination:</label>
+
+        <div class="form-group">
+            <label for="arrival">Arrival:</label>
+            <select class="form-control" id="plane" @bind="@flightSearchRequest.arrivalId">
+                @foreach (var airport in airports)
+                {
+                    <option value="@airport.Id">@airport.City (@airport.Name)</option>
+                }
+            </select>
+        </div>
+
+        @* <input type="text" class="form-control" id="destination" @bind="flightSearchRequest.destinationId" /> *@
+    </div>
+    <div class="form-group">
+        <label for="arrival">Arrival:</label>
+
+        <div class="form-group">
+            <label for="arrival">Destination:</label>
+            <select class="form-control" id="plane" @bind="@flightSearchRequest.destinationId">
+                @foreach (var airport in airports)
+                {
+                    <option value="@airport.Id">@airport.City (@airport.Name)</option>
+                }
+            </select>
+        </div>
+
+        @* <input type="text" class="form-control" id="arrival" @bind="flightSearchRequest.arrivalId" /> *@
+    </div>
+    <button type="button" class="btn btn-primary" @onclick="SearchFlightFunc" style="margin-bottom: 10px">Search</button>
+</div>
+
+@if (filteredFlights == null)
+{
+    <p>Loading...</p>
+}
+else if (!filteredFlights.Any())
+{
+    <p>No flights found for the given criteria.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Plane</th>
+                <th>Arrival</th>
+                <th>Destination</th>
+                <th>FlightDate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in filteredFlights)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Plane.Type</td>
+                    <td>@item.Arrival.City</td>
+                    <td>@item.Destination.City</td>
+                    <td>@item.FlightDate.Date</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private addFlightRequest newFlight = new addFlightRequest();
+    private flightSearchRequest flightSearchRequest = new flightSearchRequest();
+
+    bool addFlight = false;
+    string name = "";
+    string city = "";
+    string country = "";
+
+    FlightController fc = new FlightController();
+    flight[] flights;
+    List<flight> filteredFlights;
+
+    PlaneController pc = new PlaneController();
+    PlaneServiceReference.plane[] planes;
+
+    AirportController ac = new AirportController();
+    AirportServiceReference.airport[] airports = Array.Empty<AirportServiceReference.airport>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        flights = await fc.GetFlights();
+        planes = await pc.GetPlanes();
+        airports = await ac.GetAiports();
+
+        newFlight.date = DateTime.Now;
+    }
+
+    flightSearchRequest fsr = new flightSearchRequest();
+
+    public async Task SearchFlightFunc()
+    {
+        var allFlights = await fc.GetFlights();
+
+        filteredFlights = allFlights.Where(f =>
+            f.FlightDate.Date == flightSearchRequest.date.Date ||
+            f.Arrival.Id == flightSearchRequest.arrivalId ||
+            f.Destination.Id == flightSearchRequest.destinationId).ToList();
+    }
+}

@@ -45,10 +45,10 @@
                     }
                 </select>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label for="ticketId">Ticket ID:</label>
                 <input type="text" class="form-control" id="ticketId" @bind="@ticket.Id" />
-            </div>
+            </div>*@
             <div class="form-group">
                 <label for="ticketPrice">Ticket Price:</label>
                 <input type="number" class="form-control" id="ticketPrice" @bind="@ticket.Price" />
@@ -68,17 +68,6 @@
                 <label for="lastName">Last Name:</label>
                 <input type="text" class="form-control" id="lastName" @bind="@ticket.LastName" />
             </div>
-
-
-             @*<div class="form-group">
-                <label for="flightTicket">Flight (Ticket):</label>
-                <select class="form-control" id="flightTicket" @bind="@ticket.Flight">
-                    @foreach (var flight in flights)
-                    {
-                        <option value="@flight.Id">@flight.Arrival.City -> @flight.Destination.City (@flight.FlightDate.Date)</option>
-                    }
-                </select>
-            </div>*@
 
             <button type="button" class="btn btn-primary" @onclick="AddReservation" style="margin-top: 15px">Add Reservation</button>
             <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Back to the list</button>
@@ -130,7 +119,7 @@
 
 
     private addUserReservationModel addVM = new addUserReservationModel();
-    
+
 
     private UserReservationServiceReference.addUserReservationRequest userReservationReq;
 
@@ -139,6 +128,8 @@
 
     FlightController fc = new FlightController();
     FlightServiceReference.flight[] flights;
+
+    UserReservationServiceReference.flight flights2;
 
     GetUserReservationsByUserIdResponse reservations = new GetUserReservationsByUserIdResponse();
     AirportController ac = new AirportController();
@@ -178,15 +169,21 @@
             reservations = null;
             StateHasChanged();
         }
-         
+   
 
     }
 
     public void AddReservation()
     {
         userReservationReq.userId = userInfo.UserId;
-        userReservationReq.tickets.SetValue(ticket,userReservationReq.tickets.Length+1);
+        
+        // userReservationReq.flightId=flightId;
+        userReq.getUserReservationRequest.flightId = flightId;
+        // userReservationReq.tickets.Join(ticket);
 
+
+        userReservationReq.tickets.SetValue(ticket,userReservationReq.tickets.Length+1);
+        
         urc.AddReservation(userReservationReq);
     }
 
