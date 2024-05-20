@@ -13,46 +13,7 @@
 
 <h1>Flight</h1>
 @{
-    if (addFlight)
-    {
-        <form>
-            <div class="form-group">
-                <label for="plane">Plane:</label>
-                <select class="form-control" id="plane" @bind="@newFlight.planeId">
-                    @foreach (var plane in planes)
-                    {
-                        <option value="@plane.Id">@plane.Type</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="arrival">Arrival:</label>
-                <select class="form-control" id="plane" @bind="@newFlight.arrivalId">
-                    @foreach (var airport in airports)
-                    {
-                        <option value="@airport.Id">@airport.City (@airport.Name)</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="arrival">Destination:</label>
-                <select class="form-control" id="plane" @bind="@newFlight.destinationId">
-                    @foreach (var airport in airports)
-                    {
-                        <option value="@airport.Id">@airport.City (@airport.Name)</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="flightDate">Flight Date:</label>
-                <input type="date" class="form-control" id="flightDate" @bind="@newFlight.date" />
-            </div>
-            <button type="button" class="btn btn-primary" @onclick="AddFlight" style="margin-top: 15px">Add Flight</button>
-            <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Back to the list</button>
-        </form>
-    }
-    else
-    {
+   
         <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-bottom: 10px">Add a flight</button>
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -65,17 +26,17 @@
                 </tr>
             </thead>
             <tbody>
-                @if (flights == null)
+                @if (tickets == null)
                 {
                     <p>Ładowanie...</p>
                 }
                 else
                 {
 
-                    @foreach (var item in flights)
+                    @foreach (var item in tickets)
                     {
                         <tr>
-                            <td>@item.Id</td>
+                            <td>@item.FirstName</td>
                             <td>@item.Plane.Type</td>
                             <td>@item.Arrival.City</td>
                             <td>@item.Destination.City</td>
@@ -88,7 +49,7 @@
             </tbody>
         </table>
 
-    }
+    
 
 
 }
@@ -101,15 +62,8 @@
     string city = "";
     string country = "";
 
-    FlightController fc = new FlightController();
-    FlightServiceReference.flight[] flights;
 
-    PlaneController pc = new PlaneController();
-    PlaneServiceReference.plane[] planes;
-
-    AirportController ac = new AirportController();
-    AirportServiceReference.airport[] airports;
-
+    private userTickets[] tickets = Array.Empty<userTickets>();
 
     UserTicketController uc = new UserTicketController();
     
@@ -118,16 +72,10 @@
     {
         UserTicketController utc = new UserTicketController();
 
-        utc.GetTickets();
+        tickets= await utc.GetTickets();
     }
 
-    public void AddFlight()
-    {
-        newFlight.date = newFlight.date.Date;
-        newFlight.dateSpecified= true;
-        fc.AddFlight(newFlight);
-        addFlight = false;
-    }
+
     public void ChangeToAdd() => addFlight = true;
     public void ChangeToList() => addFlight = false;
     public void ToggleAddAirport()

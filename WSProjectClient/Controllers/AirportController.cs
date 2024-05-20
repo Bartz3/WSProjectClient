@@ -25,8 +25,8 @@ namespace WSProjectClient.Controllers
         public async void AddAirport(airport airport)
         {
             await _client.AddAirportAsync(airport);
-        }
 
+        }
 
 
     }

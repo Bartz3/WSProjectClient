@@ -16,11 +16,11 @@
 <PageTitle>UserReservation</PageTitle>
 
 
-<h1>Flight</h1>
+<h1>Flight reservations</h1>
 
    @if(userInfo.UserId!=0)
     {
-    <h1>Zalogowano jako @userInfo.Username ID: (@userInfo.UserId)</h1>
+    <h1>User: @userInfo.Username ID: (@userInfo.UserId)</h1>
     }
 @* <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-top: 15px">Add Reservation</button>
 
@@ -30,7 +30,6 @@
     if (addReservation)
     {
         <h1>Add a reservation</h1>
-        <h2>aaa</h2>
 
         <form>
 
@@ -69,13 +68,22 @@
                 <input type="text" class="form-control" id="lastName" @bind="@ticket.LastName" />
             </div>
 
+            <div class="form-group">
+                <label for="arrival">Destination:</label>
+                <select class="form-control" @bind="@airportId">
+                    @foreach (var airport in airports)
+                    {
+                        <option value="@airport.Id">@airport.City (@airport.Name)</option>
+                    }
+                </select>
+            </div>
+
             <button type="button" class="btn btn-primary" @onclick="AddReservation" style="margin-top: 15px">Add Reservation</button>
             <button type="button" class="btn btn-primary" style="margin-top: 15px" @onclick="ChangeToList">Back to the list</button>
         </form>
     }
     else
     {
-        <h1>Not flight</h1>
   
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -83,6 +91,8 @@
                     <th>Id</th>
                     <th>User</th>
                     <th>Reservation</th>
+                    <th>Download Confirmation</th>
+                  
                 </tr>
             </thead>
             <tbody>
@@ -99,10 +109,13 @@
                             <td>@item.Id</td>
                             <td>@item.User.Username</td>
                             <td>@item.Flight.Arrival.City -> @item.Flight.Destination.City (@item.Flight.FlightDate.Date)</td>
+                            <td>
+                                 <button type="button" class="btn btn-secondary" @onclick="() => DownloadConfirmation(item.Id)">Download Confirmation</button>
+                            </td>
                         </tr>
                     }
 
-                    <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin-bottom: 10px">Add a resrvations</button>
+                    <button type="button" class="btn btn-primary" @onclick="ChangeToAdd" style="margin: 10px">Add a resrvations</button>
                 }
 
             </tbody>
@@ -125,15 +138,17 @@
 
     private bool addReservation = false;
     private int flightId;
+    private int airportId;
 
     FlightController fc = new FlightController();
-    FlightServiceReference.flight[] flights;
+    FlightServiceReference.flight[] flights =Array.Empty<FlightServiceReference.flight>();
 
     UserReservationServiceReference.flight flights2;
 
     GetUserReservationsByUserIdResponse reservations = new GetUserReservationsByUserIdResponse();
+
     AirportController ac = new AirportController();
-    AirportServiceReference.airport[] airports;
+    AirportServiceReference.airport[] airports =  Array.Empty<AirportServiceReference.airport>();
 
     UserReservationController urc = new UserReservationController();
 
@@ -169,27 +184,56 @@
             reservations = null;
             StateHasChanged();
         }
-   
+
 
     }
 
     public void AddReservation()
     {
-        userReservationReq.userId = userInfo.UserId;
-        
-        // userReservationReq.flightId=flightId;
-        userReq.getUserReservationRequest.flightId = flightId;
-        // userReservationReq.tickets.Join(ticket);
+        var selectedAirport = airports.FirstOrDefault(a => a.Id == airportId);
+        var selectedFlight = flights.FirstOrDefault(f=>f.Id==flightId);
 
 
-        userReservationReq.tickets.SetValue(ticket,userReservationReq.tickets.Length+1);
-        
+        UserReservationServiceReference.flight flightUser;
+        UserReservationServiceReference.airport airportUser;
+
+        flightUser = new UserReservationServiceReference.flight {
+                Id = selectedFlight.Id,
+                // Arrival = selectedFlight.Arrival,
+                // Destination = selectedFlight.Destination,
+                FlightDate = selectedFlight.FlightDate,
+                // Plane = selectedFlight.Plane,
+            };
+
+        airportUser = new UserReservationServiceReference.airport
+            {
+                Id = selectedAirport.Id,
+                City = selectedAirport.City,
+                Name = selectedAirport.Name,
+                Country = selectedAirport.Country
+            };
+
+        ticket.Airport = airportUser;
+        ticket.Flight = flightUser;
+
+        var userReservationReq = new addUserReservationRequest
+        {
+            userId= userInfo.UserId,
+            flightId=flightId,
+            tickets=[ticket]
+        };
+
         urc.AddReservation(userReservationReq);
+        addReservation = false;
     }
 
-    public async void GetReservation()
+
+    public async void DownloadConfirmation(int id)
     {
-      
+        GetReservationConfirmationRequest req = new GetReservationConfirmationRequest();
+        req.confirmationRequest = id;
+
+        await urc.GetReservationConfirmation(req);
     }
 
     public void ChangeToAdd() => addReservation = true;

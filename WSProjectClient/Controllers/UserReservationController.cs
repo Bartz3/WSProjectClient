@@ -7,11 +7,13 @@ namespace WSProjectClient.Controllers
     public class UserReservationController
     {
         private  UserReservationServiceClient _client;
+        private UserReservationService urs;
         private userTickets ticket;
 
         public UserReservationController()
         {
             _client = new UserReservationServiceClient();
+
 
         }
 
@@ -37,10 +39,34 @@ namespace WSProjectClient.Controllers
 
         }
 
-        public async void GetReservationConfirmation(int confId)
+        public async Task<byte[]> GetReservationConfirmation(GetReservationConfirmationRequest request)
         {
-            await _client.GetReservationConfirmationAsync(confId);
+          
+            var result = await urs.GetReservationConfirmationAsync(request);
+
+            return result.confirmationResponse;
         }
+
+        //public async void test(GetReservationConfirmationRequest request)
+        //{
+        //    await _client.
+
+        //}
+
+        //public async Task<byte[]> GetReservationConfirmation(GetReservationConfirmationRequest request)
+        //{
+        //    try
+        //    {
+        //        var client = new UserReservationClient();
+        //        var result = await client.GetReservationConfirmationAsync(request);
+
+        //        return result.confirmationResponse;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(e.Message);
+        //    }
+        //}
 
         public async Task<GetUserReservationsByUserIdResponse> GetUserReservationByUserId(GetUserReservationsByUserIdRequest userResReq)
         {
