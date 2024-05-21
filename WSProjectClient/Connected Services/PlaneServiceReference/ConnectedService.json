@@ -1,7 +1,7 @@
 {
   "ExtendedData": {
     "inputs": [
-      "http://desktop-ve5gok9:8080/ProjectServer-1.0-SNAPSHOT/PlaneServiceImplService?wsdl"
+      "http://localhost:8080/ProjectServer-1.0-SNAPSHOT/PlaneServiceImplService?wsdl"
     ],
     "collectionTypes": [
       "System.Array",

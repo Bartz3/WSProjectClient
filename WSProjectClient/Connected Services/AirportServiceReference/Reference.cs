@@ -222,7 +222,7 @@ namespace AirportServiceReference
         {
             if ((endpointConfiguration == EndpointConfiguration.AirportServiceImplPort))
             {
-                return new System.ServiceModel.EndpointAddress("http://desktop-ve5gok9:8080/ProjectServer-1.0-SNAPSHOT/AirportServiceImplService");
+                return new System.ServiceModel.EndpointAddress("http://localhost:8080/ProjectServer-1.0-SNAPSHOT/AirportServiceImplService");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

@@ -906,7 +906,7 @@ namespace UserReservationServiceReference
         {
             if ((endpointConfiguration == EndpointConfiguration.UserReservationServiceImplPort))
             {
-                return new System.ServiceModel.EndpointAddress("http://desktop-ve5gok9:8080/ProjectServer-1.0-SNAPSHOT/UserReservationServiceImpl" +
+                return new System.ServiceModel.EndpointAddress("http://localhost:8080/ProjectServer-1.0-SNAPSHOT/UserReservationServiceImpl" +
                         "Service");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));

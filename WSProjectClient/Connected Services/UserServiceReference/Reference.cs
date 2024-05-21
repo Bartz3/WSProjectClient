@@ -387,7 +387,7 @@ namespace ServiceReference1
         {
             if ((endpointConfiguration == EndpointConfiguration.UserServiceImplPort))
             {
-                return new System.ServiceModel.EndpointAddress("http://desktop-ve5gok9:8080/ProjectServer-1.0-SNAPSHOT/UserServiceImplService");
+                return new System.ServiceModel.EndpointAddress("http://localhost:8181/ProjectServer-1.0-SNAPSHOT/UserServiceImplService");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

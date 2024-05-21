@@ -601,7 +601,7 @@ namespace FlightServiceReference
         {
             if ((endpointConfiguration == EndpointConfiguration.FlightServiceImplPort))
             {
-                return new System.ServiceModel.EndpointAddress("http://desktop-ve5gok9:8080/ProjectServer-1.0-SNAPSHOT/FlightServiceImplService");
+                return new System.ServiceModel.EndpointAddress("http://localhost:8080/ProjectServer-1.0-SNAPSHOT/FlightServiceImplService");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
