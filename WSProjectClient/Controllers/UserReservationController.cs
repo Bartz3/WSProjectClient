@@ -46,7 +46,11 @@ namespace WSProjectClient.Controllers
 
             return result.confirmationResponse;
         }
-
+        public async Task<byte[]> Test(int id)
+        {
+            var result = _client.GetReservationConfirmationAsync(id);
+            return result.Result.confirmationResponse;
+        }
         //public async void test(GetReservationConfirmationRequest request)
         //{
         //    await _client.

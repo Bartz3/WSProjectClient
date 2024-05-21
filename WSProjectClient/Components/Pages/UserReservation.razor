@@ -9,6 +9,7 @@
 @using WSProjectClient.Models
 
 @inject UserInfo userInfo
+@inject IJSRuntime JSRuntime
  
 @rendermode InteractiveServer
 
@@ -236,14 +237,27 @@
     }
 
 
-    public async void DownloadConfirmation(int id)
+    public async Task<byte[]> DownloadConfirmation(int id)
     {
         GetReservationConfirmationRequest req = new GetReservationConfirmationRequest();
+
         req.confirmationRequest = id;
 
-        await urc.GetReservationConfirmation(req);
+        // await urc.GetReservationConfirmation(req);
+        var result = await urc.Test(id);
+
+
+        var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        await File.WriteAllBytesAsync(path + "\\confirmation.pdf", result);
+        // string fileName = "confirmation.pdf";
+        // await JSRuntime.InvokeAsync<object>("saveFile", fileName, result);
+
+        return result;
     }
 
+    // var response = await reservationRepository.GetReservationConfirmation(request);
+    
+   
     public void ChangeToAdd() => addReservation = true;
     public void ChangeToList() => addReservation = false;
 
